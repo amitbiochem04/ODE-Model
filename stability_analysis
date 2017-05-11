@@ -1,35 +1,24 @@
-I have the following equation in my ODE system
+###I have the following equation in my ODE system
 d(ERK)/dt = -k1.*ERK*NGF + k2.*pERK.*DUSP6
-
 d(pERK)/dt = k1.*ERK.*NGF-k2.*pERK.*DUSP6
-
 d(P38)/dt = -k3.*P38.*NGF+k4.*pP38
-
 d(pP38)/dt = k3.*P38.*pERK-k4.*pP38
-
 d(dusp6)/dt= k5.*mRNADUSP6-d1.*DUSP6
-
 d(mRNADusp6)/dt= -d2.*mRNADUSP6+k6.*pERK.*pP38
-
 Here i consider ( y1=ERK, y2=pERK, y3=P38, y4=pP38, y5=mRNADUSP6, y6=DUSP6
-
 Here i replace parameters by puting the number which i obtained from estimatimation
-
-
 e1 = -2.46*y1 + 213*y2*y5
 e2 = 2.46*y1 - 213*y2*y5
 e3 = -0.0253*y3*y2 + 2.94*y4
 e4 = 0.0253*y3*y2 - 2.94*y4
 e5 = 3.123*y6 - 0.6*y5
 e6 = -0.16*y6 + 3.13*y4*Y2
-
 FindRoot[{e1 == 0, e2 == 0, e3 == 0, e4 == 0, e5 == 0, e6 == 0}, {{y1, 2}, { y2, 2}, {y3, 4}, {y4, 10}, {y5, 1.8}, {y6, 
    0}}]
    
 NSolve[{e1 == 0, e2 == 0}, {y1, y2}]   
 e1 = -2.46*y1 + 213*y2
 e2 = 2.46*y1 - 213*y2
-
 Jac = {{D[e1, y1], D[e1, y2], D[e1, y3], D[e1, y4], D[e1, y5], 
    D[e1, y6]},{D[e2, y1], D[e2, y2], D[e2, y3], D[e2, y4], D[e2, y5], 
    D[e2, y6]},
@@ -41,27 +30,12 @@ Jac = {{D[e1, y1], D[e1, y2], D[e1, y3], D[e1, y4], D[e1, y5],
    D[e5, y6]},
          {D[e6, y1], D[e6, y2], D[e6, y3], D[e6, y4], D[e6, y5], 
    D[e6, y6]}}
-   
-   
-   
-   
    MatrixForm[Jac]
-   
    I calculate the jacobian by putting {y1 -> 0, y2 -> 0, y3 -> 0, 
   y4 -> 0, y5 -> 0, y6 -> 0}
-  
-  
-  
-  
   a1 = Jac /. {y1 -> 0, y2 -> 0, y3 -> 0, y4 -> 0, y5 -> 0, y6 -> 0}
-  
-  
-  
   Eigenvalues[a1]
-  
-  
-  
-  anipulate[m = {{k1, k2}, {k2, k1}}; 
+  manipulate[m = {{k1, k2}, {k2, k1}}; 
  Show[VectorPlot[m.{y1, y2}, {y1, -10, 10}, {y2, -10, 10}, 
    StreamPoints -> {{pt1, pt2, pt3, pt4}}, 
    StreamStyle -> {Red, Thick}, ImageSize -> {560, 510}], 
