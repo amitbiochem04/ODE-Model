@@ -8,3 +8,15 @@ options=optimset('LevenbergMarquardt','on','LargeScale','on','TolX',10^(-12),'Ma
 					%AIC=log(residual /50)+2*23;
 					
 return
+
+[~,~,residual,~,~,~,jacobian]=lsqnonlin(@costl,pmin,[],[],options,td,yd,idx,iy);
+j(:,:)=jacobian; e=residual;
+s=e'*e/dof; %variance of errors
+%% calculate the covariance of parameter
+estimators
+pcov = s*inv(j'*j) ; %covariance of parameters
+psigma=sqrt(diag(pcov))'; % standard deviationparameters
+pcor = pcov ./ [psigma'*psigma]; % correlationmatrix
+alfa=0.025; % significance level
+tcr=tinv((1-alfa),dof); % critical t-dist value at alfa
+p95 =[pmin-psigma*tcr; pmin+psigma*tcr]; %+-95%confidence intervals
